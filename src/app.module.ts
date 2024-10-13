@@ -2,7 +2,12 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import typeorm from './configs/typeorm';
+import { AuthController } from './auth/auth.controller';
+import { AuthService } from './auth/auth.service';
+import { GoogleStrategy } from './auth/strategies/google.stategy';
+import typeorm from './config/typeorm';
+import { OauthinfoModule } from './oauthinfo/oauthinfo.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -17,8 +22,10 @@ import typeorm from './configs/typeorm';
         configService.get('typeorm'),
       imports: undefined,
     }),
+    UsersModule,
+    OauthinfoModule,
   ],
-  controllers: [],
-  providers: [],
+  controllers: [AuthController],
+  providers: [GoogleStrategy, AuthService],
 })
 export class AppModule {}
